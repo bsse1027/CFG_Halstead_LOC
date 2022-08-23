@@ -222,7 +222,7 @@ if __name__ == '__main__':
     # demo.set_image(str(args.pythonfile) + ".png")
     demo.label1.setText("Nodes\t\t" + str(nodes))
     demo.label2.setText("Edges\t\t" + str(edges))
-    demo.label3.setText("Cyclo Complexity\t" + str(complexity))
+    demo.label3.setText("C.Complexity\t" + str(complexity))
     demo.label4.setText("Vocabulary\t" + str(Vocabulary))
     demo.label5.setText("Volume\t\t" + str(Volume))
     demo.label6.setText("Difficulty\t" + str(Difficulty))
