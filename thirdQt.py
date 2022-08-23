@@ -172,12 +172,18 @@ class AppDemo(QWidget):
         self.label2 = Label()
         self.label3 = Label()
         self.label4 = Label()
+        self.label5 = Label()
+        self.label6 = Label()
+        self.label7 = Label()
+
         mainLayout.addWidget(self.photoViewer)
         mainLayout.addWidget(self.label1)
         mainLayout.addWidget(self.label2)
         mainLayout.addWidget(self.label3)
         mainLayout.addWidget(self.label4)
-
+        mainLayout.addWidget(self.label5)
+        mainLayout.addWidget(self.label6)
+        mainLayout.addWidget(self.label7)
         self.setLayout(mainLayout)
 
     # def set_image(self, file_path):
@@ -212,5 +218,8 @@ if __name__ == '__main__':
     demo.label2.setText("Edges\t\t" + str(edges))
     demo.label3.setText("Cyclo Complexity\t" + str(complexity))
     demo.label4.setText("Vocabulary\t" + str(Vocabulary))
+    demo.label5.setText("Volume\t\t" + str(Volume))
+    demo.label6.setText("Difficulty\t" + str(Difficulty))
+    demo.label7.setText("Effort\t\t" + str(Effort))
     demo.show()
     sys.exit(app.exec_())
