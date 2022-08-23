@@ -15,6 +15,7 @@ global Vocabulary
 global Volume
 global Difficulty
 global Effort
+global linesLen
 Vocabulary = 0
 Volume = 0
 Difficulty = 0
@@ -118,9 +119,12 @@ def filter_comments(sourceCodeFile):
 
 
 def main(sourcecode_file):
+    global linesLen
     lines = filter_comments(sourcecode_file)
 
-    print("Lines of Code: ", len(lines))
+    # print("Lines of Code: ", len(lines))
+    linesLen = len(lines)
+
     for line in lines:
         tokens = line.strip().split()
         for token in tokens:
@@ -175,6 +179,7 @@ class AppDemo(QWidget):
         self.label5 = Label()
         self.label6 = Label()
         self.label7 = Label()
+        self.label8 = Label()
 
         mainLayout.addWidget(self.photoViewer)
         mainLayout.addWidget(self.label1)
@@ -184,6 +189,7 @@ class AppDemo(QWidget):
         mainLayout.addWidget(self.label5)
         mainLayout.addWidget(self.label6)
         mainLayout.addWidget(self.label7)
+        mainLayout.addWidget(self.label8)
         self.setLayout(mainLayout)
 
     # def set_image(self, file_path):
@@ -221,5 +227,6 @@ if __name__ == '__main__':
     demo.label5.setText("Volume\t\t" + str(Volume))
     demo.label6.setText("Difficulty\t" + str(Difficulty))
     demo.label7.setText("Effort\t\t" + str(Effort))
+    demo.label8.setText("Lines of Code\t" + str(linesLen))
     demo.show()
     sys.exit(app.exec_())
