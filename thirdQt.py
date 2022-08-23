@@ -10,16 +10,21 @@ from qtconsole.qt import QtCore
 
 import sys
 import math
+import os
+import radon
 
 global Vocabulary
 global Volume
 global Difficulty
 global Effort
 global linesLen
+global LLOC
+global SLOC
 Vocabulary = 0
 Volume = 0
 Difficulty = 0
 Effort = 0
+linesLen = 0
 
 operators = ["=", "+", "-", "*", "\\", "^", "\"", "\'", ".", "~", "|", "[", "]", "(", ")", ";", ":", "%", ",", "!", "<",
              ">", "&", "{", "}"]
@@ -119,26 +124,70 @@ def filter_comments(sourceCodeFile):
 
 
 def main(sourcecode_file):
-    global linesLen
-    lines = filter_comments(sourcecode_file)
+    global linesLen,LLOC,SLOC
+    count = 0
+    lines = os.popen('radon hal ' + sourcecode_file).read()
+    LOC = os.popen('radon raw ' + sourcecode_file).read()
+    for line in LOC.split('\n'):
+        if 'LOC' in line:
+            count = count+1
+            if count == 1:
+                linesLen = line
+            elif count == 2:
+                LLOC = line
+                print(LLOC)
+            elif count == 3:
+                SLOC = line
+                print(SLOC)
 
-    # print("Lines of Code: ", len(lines))
-    linesLen = len(lines)
+        elif 'Comments' in line:
+            print(line)
+        elif 'Single comments' in line:
+            print(line)
+        elif 'Blank' in line:
+            print(line)
+    for line in lines.split('\n'):
+        if 'h1' in line:
+            print(line)
+        if 'h2' in line:
+            print(line)
+        if 'N1' in line:
+            print(line)
+        if 'N2' in line:
+            print(line)
+        if 'vocabulary' in line:
+            global Vocabulary
+            Vocabulary = line
+        if 'volume' in line:
+            global Volume
+            Volume = line
+        if 'difficulty' in line:
+            global Difficulty
+            Difficulty = line
+        if 'effort' in line:
+            global Effort
+            Effort = line
 
-    for line in lines:
-        tokens = line.strip().split()
-        for token in tokens:
-            filter_token(token)
-
-    for key, value in n1.items():
-        print(key + " = " + str(value))
-
-    for key, value in n2.items():
-        print(key + " = " + str(value))
-
-    print("Operator(n1): ", n1)
-    print("Operand(n2): ", n2)
-    measure_halstead(sum(n1.values()), sum(n2.values()), len(n1), len(n2))
+    # global linesLen
+    # lines = filter_comments(sourcecode_file)
+    #
+    # # print("Lines of Code: ", len(lines))
+    # linesLen = len(lines)
+    #
+    # for line in lines:
+    #     tokens = line.strip().split()
+    #     for token in tokens:
+    #         filter_token(token)
+    #
+    # for key, value in n1.items():
+    #     print(key + " = " + str(value))
+    #
+    # for key, value in n2.items():
+    #     print(key + " = " + str(value))
+    #
+    # print("Operator(n1): ", n1)
+    # print("Operand(n2): ", n2)
+    # measure_halstead(sum(n1.values()), sum(n2.values()), len(n1), len(n2))
 
 
 class ImageLabel(QLabel):
@@ -180,6 +229,8 @@ class AppDemo(QWidget):
         self.label6 = Label()
         self.label7 = Label()
         self.label8 = Label()
+        self.label9 = Label()
+        self.label10 = Label()
 
         mainLayout.addWidget(self.photoViewer)
         mainLayout.addWidget(self.label1)
@@ -190,6 +241,8 @@ class AppDemo(QWidget):
         mainLayout.addWidget(self.label6)
         mainLayout.addWidget(self.label7)
         mainLayout.addWidget(self.label8)
+        mainLayout.addWidget(self.label9)
+        mainLayout.addWidget(self.label10)
         self.setLayout(mainLayout)
 
     # def set_image(self, file_path):
@@ -227,6 +280,8 @@ if __name__ == '__main__':
     demo.label5.setText("Volume\t\t" + str(Volume))
     demo.label6.setText("Difficulty\t" + str(Difficulty))
     demo.label7.setText("Effort\t\t" + str(Effort))
-    demo.label8.setText("Lines of Code\t" + str(linesLen))
+    demo.label8.setText("LOC\t\t" + str(linesLen))
+    demo.label9.setText("LLOC\t\t" + str(LLOC))
+    demo.label10.setText("SLOC\t\t" + str(SLOC))
     demo.show()
     sys.exit(app.exec_())
